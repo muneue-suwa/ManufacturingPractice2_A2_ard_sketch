@@ -1,7 +1,7 @@
 const int LED_PIN = 3;
 const int RPI_INPUT_PIN = 12;
 int isOn = 0;
-int led_values[] = {255, 150, 255, 100};
+int led_values[] = {255, 100, 255, 50};
 int led_value_fig = 0;  // 0 - 3
 int rpi_high_times = 0;
 
@@ -17,7 +17,7 @@ void loop() {
   }else if(digitalRead(RPI_INPUT_PIN) == HIGH){
     rpi_high_times += 1;
     // Serial.println("RPI_HIGH");
-    if(rpi_high_times > 4){  // pushing 0.4 secs
+    if(rpi_high_times > 3){  // pushing 0.4 secs
       isOn = 1 - isOn;
       rpi_high_times = -50; // wait 5 secs after status changed
     }

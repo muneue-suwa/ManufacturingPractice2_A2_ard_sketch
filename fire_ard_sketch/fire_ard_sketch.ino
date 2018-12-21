@@ -28,7 +28,7 @@ void loop() {
   Serial.println(rpi_high_times);
   Serial.print("button_high_times: ");
   Serial.println(button_high_times);
-  delay(500);
+  delay(100);
 }
 
 void fire(int *value_fig){

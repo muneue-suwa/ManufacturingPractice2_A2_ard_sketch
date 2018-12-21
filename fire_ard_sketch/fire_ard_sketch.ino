@@ -1,6 +1,7 @@
 const int LED_PIN = 3;
 const int RPI_INPUT_PIN = 12;
 const int BUTTON_INPUT_PIN = 5;
+const int BOARD_LED = 13;
 int isOn = 0;
 int led_values[] = {255, 100, 255, 50};
 int led_value_fig = 0;  // 0 - 3
@@ -9,7 +10,8 @@ int button_high_times = 0;
 
 void setup() {
   pinMode(RPI_INPUT_PIN, INPUT);
-  pinMode(BUTTON_INPUT_PIN, INPUT);
+  pinMode(BUTTON_INPUT_PIN, INPUT);  // could change isOn status without Raspberry PI
+  pinMode(BOARD_LED, OUTPUT);  // describe changed isOn with LED on the board in change_isOn()
   Serial.begin(9600);
 }
 
@@ -26,8 +28,6 @@ void loop() {
   Serial.println(rpi_high_times);
   Serial.print("button_high_times: ");
   Serial.println(button_high_times);
-  Serial.print("isOn: ");
-  Serial.println(isOn);
   delay(500);
 }
 
@@ -44,15 +44,17 @@ void change_isOn(int *high_times, int INPUT_PIN){
   if(*high_times < 0){
     // do not change status immediately after status changed
     *high_times += 1;
+    digitalWrite(BOARD_LED, LOW);
   }else if(digitalRead(INPUT_PIN) == HIGH){
     *high_times += 1;
-    // Serial.println("RPI_HIGH");
     if(*high_times > 3){  // pushing 0.4 secs
       isOn = 1 - isOn;
       *high_times = -50; // wait 5 secs after status changed
+      digitalWrite(BOARD_LED, HIGH);
     }
   }else{
     *high_times = 0;
+    digitalWrite(BOARD_LED, LOW);
   }
   return;
 }
